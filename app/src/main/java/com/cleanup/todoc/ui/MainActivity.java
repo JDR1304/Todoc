@@ -1,5 +1,6 @@
 package com.cleanup.todoc.ui;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,12 +19,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cleanup.todoc.R;
+import com.cleanup.todoc.injection.Injection;
+import com.cleanup.todoc.injection.ViewModelFactory;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>Home activity of the application which is displayed when the user opens the app.</p>
@@ -32,6 +36,11 @@ import java.util.Date;
  * @author Gaëtan HERFRAY
  */
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
+
+    // Add JDR FOR DATA
+    private TaskViewModel taskViewModel;
+    //private TasksAdapter adapter;
+    private static int PROJECT_ID = 1;
     /**
      * List of all projects available in the application
      */
@@ -107,6 +116,46 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             }
         });
     }
+    // -------------------
+    // DATA add by JDR
+    // -------------------
+
+    private void configureViewModel(){
+        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
+        this.taskViewModel = ViewModelProviders.of(this, mViewModelFactory).get(TaskViewModel.class);
+        this.taskViewModel.init(PROJECT_ID);
+    }
+
+    // ---
+/*
+    private void getCurrentProject(int projectId){
+        this.taskViewModel.getProject(projectId).observe(this, this::updateHeader);
+    }
+
+    // ---
+
+    private void getTasks(int projectId){
+        this.taskViewModel.getTasks(projectId).observe(this, this::updateTasksList);
+    }
+
+    private void createTask(){
+        Task task = new Task(1,1,);
+        this.editText.setText("");
+        this.taskViewModel.createTask(task);
+        //(this.editText.getText().toString(), this.spinner.getSelectedItemPosition(), PROJECT_ID);
+    }
+
+    private void deleteTask(Task task){
+        this.taskViewModel.deleteTask(task.getId());
+    }
+
+    private void updateTask(Task task){
+        task.setSelected(!task.getSelected());
+        this.taskViewModel.updateTask(task);
+    }
+
+ */
+//----------------Fin Data------------------------------------------------------------------------------
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -182,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 dialogInterface.dismiss();
             }
         }
-        // If dialog is aloready closed
+        // If dialog is already closed
         else {
             dialogInterface.dismiss();
         }
@@ -320,4 +369,17 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
          */
         NONE
     }
+
+/*
+    private void updateHeader(Project project){
+        this.profileText.setText(project.getProjectName());
+        //Glide.with(this).load(user.getUrlPicture()).apply(RequestOptions.circleCropTransform()).into(this.profileImage);
+    }
+
+ */
+
+    private void updateTasksList(List<Task> tasks){
+        this.adapter.updateTasks(tasks);
+    }
+
 }
