@@ -50,11 +50,12 @@ public abstract class ToDocDatabase extends RoomDatabase{
                 Project [] tab = Project.getAllProjects();
                 ContentValues contentValues = new ContentValues();
                 for (int i = 0; i<tab.length;i++) {
-                    contentValues.put("id", i);
-                    contentValues.put("name", Project.getProjectById(i).getName());
-                    contentValues.put("color", Project.getProjectById(i).getColor());
+                    contentValues.put("id", tab [i].getId());
+                    contentValues.put("name", tab [i].getName());
+                    contentValues.put("color", tab [i].getColor());
+                    db.insert("Project", OnConflictStrategy.IGNORE, contentValues);
                 }
-                db.insert("Project", OnConflictStrategy.IGNORE, contentValues);
+
             }
         };
     }

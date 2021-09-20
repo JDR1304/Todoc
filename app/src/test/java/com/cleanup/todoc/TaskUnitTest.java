@@ -1,12 +1,15 @@
 package com.cleanup.todoc;
 
+import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -29,6 +32,16 @@ public class TaskUnitTest {
         assertEquals("Projet Lucidia", task2.getProject().getName());
         assertEquals("Projet Circus", task3.getProject().getName());
         assertNull(task4.getProject());
+    }
+   // Add JDR
+    @Test
+    public void test_getProjectById(){
+        List<Project>  listOfProject = Arrays.asList(Project.getAllProjects());
+
+        assertEquals("Projet Tartampion", listOfProject.get(0).getName());
+        assertEquals("Projet Lucidia", listOfProject.get(1).getName());
+        assertEquals("Projet Circus", listOfProject.get(2).getName());
+
     }
 
     @Test
@@ -98,4 +111,6 @@ public class TaskUnitTest {
         assertSame(tasks.get(1), task2);
         assertSame(tasks.get(2), task3);
     }
+
+
 }

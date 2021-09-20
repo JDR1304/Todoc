@@ -13,6 +13,7 @@ import com.cleanup.todoc.R;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,13 +44,20 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         this.deleteTaskListener = deleteTaskListener;
     }
 
+    TasksAdapter( @NonNull final DeleteTaskListener deleteTaskListener) {
+        this.tasks = new ArrayList<>();
+        this.deleteTaskListener = deleteTaskListener;
+    }
+
     /**
      * Updates the list of tasks the adapter deals with.
      *
      * @param tasks the list of tasks the adapter deals with to set
      */
     void updateTasks(@NonNull final List<Task> tasks) {
-        this.tasks = tasks;
+        //this.tasks = tasks;
+        this.tasks.clear();
+        this.tasks.addAll(tasks);
         notifyDataSetChanged();
     }
 
