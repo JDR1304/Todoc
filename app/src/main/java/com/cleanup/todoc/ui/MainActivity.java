@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @NonNull
     private TextView lblNoTasks;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         lblNoTasks = findViewById(R.id.lbl_no_task);
 
         configureViewModel();
+        getProjects();
         getTasks();
 
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -277,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * Sets the data of the Spinner with projects to associate to a new task
      */
     private void populateDialogSpinner() {
-        final ArrayAdapter<Project> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, taskViewModel.getProjects());
+        final ArrayAdapter<Project> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, taskViewModel.setListOfProject());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         if (dialogSpinner != null) {
             dialogSpinner.setAdapter(adapter);
@@ -292,6 +294,12 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
         this.taskViewModel = ViewModelProviders.of(this, mViewModelFactory).get(TaskViewModel.class);
         //this.taskViewModel.init(PROJECT_ID);
+    }
+    // take the list from observer to send it toward ViewModel
+    private void getProjects() {
+        this.taskViewModel.getProjects().observe(this, listOfProjects -> {
+            taskViewModel.updateProjectsList(listOfProjects);
+        });
     }
 
     private void getTasks() {

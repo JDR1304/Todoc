@@ -10,7 +10,6 @@ import com.cleanup.todoc.model.Task;
 import com.cleanup.todoc.repositories.ProjectDataRepository;
 import com.cleanup.todoc.repositories.TaskDataRepository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -34,6 +33,8 @@ public class TaskViewModel extends ViewModel {
     private LiveData<List<Task>> tasks;
     private LiveData<List<Project>> projects;
 
+    private List<Project> listOfProject;
+
     public TaskViewModel(TaskDataRepository taskDataSource, ProjectDataRepository projectDataSource, Executor executor) {
         this.taskDataSource = taskDataSource;
         this.projectDataSource = projectDataSource;
@@ -53,7 +54,10 @@ public class TaskViewModel extends ViewModel {
 
     public LiveData<Project> getProject(long projectId) { return this.currentProject;  }
 
-    public LiveData<List<Project>> getProjects() { return this.projects; }
+    public LiveData<List<Project>> getProjects() {
+        projects = projectDataSource.getProjects();
+        return projects;
+    }
 
     // -------------
     // FOR TASK
@@ -90,6 +94,15 @@ public class TaskViewModel extends ViewModel {
     public void setSortMethod(SortMethod sortMethod){
         this.sortMethod = sortMethod;
         }
+
+    // Method which pick up the projects list from activity to ViewModel
+    public void updateProjectsList(List<Project> listOfProjects) {
+        this.listOfProject = listOfProjects;
+    }
+    // Method which supplies the projects list
+    public List<Project> setListOfProject (){
+        return listOfProject;
+    }
 
     /**
      * List of all possible sort methods for task
