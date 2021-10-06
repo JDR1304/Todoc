@@ -6,6 +6,8 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.List;
+
 @Entity
 public class Project {
 
@@ -37,6 +39,15 @@ public class Project {
     @Nullable
     public static Project getProjectById(long id) {
         for (Project project : getAllProjects()) {
+            if (project.id == id)
+                return project;
+        }
+        return null;
+    }
+
+    @Nullable
+    public static Project getProjectById(long id, List <Project> projects) {
+        for (Project project : projects) {
             if (project.id == id)
                 return project;
         }

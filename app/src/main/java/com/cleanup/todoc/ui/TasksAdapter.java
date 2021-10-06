@@ -33,6 +33,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
      */
     @NonNull
     private final DeleteTaskListener deleteTaskListener;
+    private List<Project> projects;
 
     /**
      * Instantiates a new TasksAdapter.
@@ -157,7 +158,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
             lblTaskName.setText(task.getName());
             imgDelete.setTag(task);
 
-            final Project taskProject = task.getProject();
+            final Project taskProject = task.getProject(projects);
             if (taskProject != null) {
                 imgProject.setSupportImageTintList(ColorStateList.valueOf(taskProject.getColor()));
                 lblProjectName.setText(taskProject.getName());
@@ -167,5 +168,9 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
             }
 
         }
+
+    }
+    public void setProjects(List <Project> projects){
+         this.projects = projects;
     }
 }

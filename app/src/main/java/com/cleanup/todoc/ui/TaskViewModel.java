@@ -25,7 +25,7 @@ public class TaskViewModel extends ViewModel {
      * The sort method to be used to display tasks
      */
     @NonNull
-    private SortMethod sortMethod = SortMethod.NONE;
+    private SortMethod sortMethod = SortMethod.OLD_FIRST;
 
     // DATA
     @Nullable
@@ -100,7 +100,7 @@ public class TaskViewModel extends ViewModel {
         this.listOfProject = listOfProjects;
     }
     // Method which supplies the projects list
-    public List<Project> setListOfProject (){
+    public List<Project> getListOfProject(){
         return listOfProject;
     }
 

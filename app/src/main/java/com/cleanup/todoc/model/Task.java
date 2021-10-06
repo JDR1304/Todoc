@@ -1,21 +1,25 @@
 package com.cleanup.todoc.model;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.Comparator;
+import java.util.List;
 
 @Entity(foreignKeys = @ForeignKey(entity = Project.class,
         parentColumns = "id",
-        childColumns = "projectId"))
+        childColumns = "project_id"))
 public class Task {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
 
+    @ColumnInfo( name = "project_id", index = true)
     private long projectId;
 
     // Suppress warning because setName is called in constructor
@@ -28,8 +32,15 @@ public class Task {
     // Add JDR
     private Boolean isSelected;
 
+    @Ignore
     public Task(long id, long projectId, @NonNull String name, long creationTimestamp) {
         this.setId(id);
+        this.setProjectId(projectId);
+        this.setName(name);
+        this.setCreationTimestamp(creationTimestamp);
+    }
+
+    public Task( long projectId, @NonNull String name, long creationTimestamp) {
         this.setProjectId(projectId);
         this.setName(name);
         this.setCreationTimestamp(creationTimestamp);
@@ -42,17 +53,22 @@ public class Task {
     // Add JDR
     public Boolean getSelected() { return isSelected; }
 
-    private void setId(long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    private void setProjectId(long projectId) {
+    public void setProjectId(long projectId) {
         this.projectId = projectId;
     }
 
     @Nullable
     public Project getProject() {
         return Project.getProjectById(projectId);
+    }
+    //Add JDR
+    @Nullable
+    public Project getProject(List<Project> projects) {
+        return Project.getProjectById(projectId, projects);
     }
     //Add JDR
     public long getProjectId() {
