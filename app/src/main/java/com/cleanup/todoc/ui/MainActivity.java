@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                         new Date().getTime()
                 );
 
-                //addTask(task); JDR Local data
+
                 taskViewModel.createTask(task);
 
 
@@ -204,28 +204,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         populateDialogSpinner();
     }
 
-    /**
-     * Updates the list of tasks in the UI
-     */
-    private void sortTasks(List <Task> tasks) {
 
-        switch (taskViewModel.getSortMethod()) {
-            case ALPHABETICAL:
-                Collections.sort(tasks, new Task.TaskAZComparator());
-                break;
-            case ALPHABETICAL_INVERTED:
-                Collections.sort(tasks, new Task.TaskZAComparator());
-                break;
-            case RECENT_FIRST:
-                Collections.sort(tasks, new Task.TaskRecentComparator());
-                break;
-            case OLD_FIRST:
-                Collections.sort(tasks, new Task.TaskOldComparator());
-                break;
 
-        }
-
-    }
 
     /**
      * Returns the dialog allowing the user to create a new task.
@@ -300,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     private void getTasks() {
         this.taskViewModel.getTasks().observe(this, listOfTasks -> {
-            sortTasks(listOfTasks);
+            taskViewModel.sortTasks(listOfTasks);
             updateTasksList(listOfTasks);
         });
     }

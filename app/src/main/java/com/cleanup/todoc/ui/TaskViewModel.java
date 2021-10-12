@@ -10,6 +10,7 @@ import com.cleanup.todoc.model.Task;
 import com.cleanup.todoc.repositories.ProjectDataRepository;
 import com.cleanup.todoc.repositories.TaskDataRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -40,13 +41,6 @@ public class TaskViewModel extends ViewModel {
         this.projectDataSource = projectDataSource;
         this.executor = executor;
     }
-
-//    public void init(long projectId) {
-//        if (this.currentProject != null) {
-//            return;
-//        }
-//        currentProject = projectDataSource.getProject(projectId);
-//    }
 
     // -------------
     // FOR PROJECT
@@ -80,12 +74,28 @@ public class TaskViewModel extends ViewModel {
         });
     }
 
-//    public void updateTask(Task task) {
-//        executor.execute(() -> {
-//            taskDataSource.updateTask(task);
-//        });
-//    }
 
+    /**
+     * Updates the list of tasks in the UI
+     */
+    public void sortTasks(List <Task> tasks) {
+
+        switch (sortMethod) {
+            case ALPHABETICAL:
+                Collections.sort(tasks, new Task.TaskAZComparator());
+                break;
+            case ALPHABETICAL_INVERTED:
+                Collections.sort(tasks, new Task.TaskZAComparator());
+                break;
+            case RECENT_FIRST:
+                Collections.sort(tasks, new Task.TaskRecentComparator());
+                break;
+            case OLD_FIRST:
+                Collections.sort(tasks, new Task.TaskOldComparator());
+                break;
+
+        }
+    }
     @NonNull
     public SortMethod getSortMethod() {
         return sortMethod;
